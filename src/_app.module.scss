@@ -1,5 +1,5 @@
-$app-background-time-on: linear-gradient(90deg, #F78CA0 0%, #F9748F 20.31%, #FD868C 66.67%, #FE9A8B 100%);
-$app-background-time-off: linear-gradient(180deg, #48C6EF 0%, #6F86D6 100%);
+$app-background-time-work: linear-gradient(90deg, #F78CA0 0%, #F9748F 20.31%, #FD868C 66.67%, #FE9A8B 100%);
+$app-background-time-rest: linear-gradient(180deg, #48C6EF 0%, #6F86D6 100%);
 
 * {
   box-sizing: border-box;
@@ -9,8 +9,5 @@ $app-background-time-off: linear-gradient(180deg, #48C6EF 0%, #6F86D6 100%);
 
 .app {
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $app-background-time-on;
+  background: $app-background-time-work;
 }

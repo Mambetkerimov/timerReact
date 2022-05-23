@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import React, {FC, MouseEventHandler} from 'react';
 import style  from "./_button.module.scss";
 
 interface IButtonProps {
     text: string;
-    onClick?: void;
+    onClick?: MouseEventHandler;
 }
 
 const Button: FC<IButtonProps> = ({ text }) => {
