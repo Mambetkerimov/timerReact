@@ -6,9 +6,9 @@ interface IButtonProps {
     onClick?: MouseEventHandler;
 }
 
-const Button: FC<IButtonProps> = ({ text }) => {
+const Button: FC<IButtonProps> = ({ text, onClick }) => {
     return (
-        <button className={style.button}>{text}</button>
+        <button className={style.button} onClick={onClick}>{text}</button>
     );
 };
 

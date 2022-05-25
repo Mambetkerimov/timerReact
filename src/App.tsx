@@ -7,12 +7,14 @@ function App() {
     const [active, setActive] = useState<boolean>(false);
     const handleOpen = () => {
         setActive(true);
-        console.log("is working");
+    }
+    const handleClose = () => {
+        setActive(false)
     }
   return (
     <div className={style.app}>
         <Icon onClick={handleOpen} />
-        <Modal active={active} />
+        <Modal active={active} onClick={handleClose} />
     </div>
   );
 }
