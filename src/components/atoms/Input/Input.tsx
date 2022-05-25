@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import style from './_input.module.scss';
 
 interface IInputProps {
