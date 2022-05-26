@@ -1,15 +1,15 @@
-import React, {FC, MouseEventHandler} from 'react';
+import React, {ButtonHTMLAttributes, FC, FormEventHandler, MouseEventHandler} from 'react';
 import style  from "./_button.module.scss";
 
-interface IButtonProps {
+interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     text: string;
     onClick?: MouseEventHandler;
+    type?: 'submit' | 'reset' | 'button';
+    onSubmit?: FormEventHandler<HTMLButtonElement>;
 }
 
-const Button: FC<IButtonProps> = ({ text, onClick }) => {
+export const Button: FC<IButtonProps> = ({ text, onClick, type, onSubmit }) => {
     return (
-        <button className={style.button} onClick={onClick}>{text}</button>
+        <button className={style.button} onClick={onClick} type={type} onSubmit={onSubmit}>{text}</button>
     );
 };
-
-export default Button;

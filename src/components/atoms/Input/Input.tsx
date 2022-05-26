@@ -1,18 +1,15 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {FC, InputHTMLAttributes} from 'react';
 import style from './_input.module.scss';
 
-interface IInputProps {
-    onChange?: void;
-    labelText: string
+interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
+    labelText: string;
 }
 
-const Input: FC<IInputProps> = ({ labelText, onChange }) => {
+export const Input: FC<IInputProps> = ({labelText, value, onChange}) => {
     return (
         <>
             <label className={style.label}>{labelText}</label>
-            <input className={style.input} />
+            <input className={style.input} value={value} onChange={onChange}/>
         </>
     );
 };
-
-export default Input;

@@ -1,0 +1,21 @@
+.timer {
+  display: flex;
+
+  .time {
+    font-size: 40px;
+    color: #fff;
+  }
+}
+
+.timer_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
