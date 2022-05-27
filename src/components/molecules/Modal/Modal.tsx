@@ -1,7 +1,7 @@
 import React, {FC, FormEvent, MouseEventHandler, useContext, useState} from 'react';
 import style from './_modal.module.scss';
 import {Button, Input} from '../../atoms';
-import {ModalContext} from "../../../context/ModalContext";
+import {MainContext} from "../../../context";
 
 interface IModalProps {
     active: boolean;
@@ -14,7 +14,7 @@ export const Modal: FC<IModalProps> = ({active, onClick}) => {
     const [lBreak, setLBreak] = useState<string>('');
     const [numberPomodoro, setNumberPomodoro] = useState<string>('');
 
-    const context = useContext(ModalContext);
+    const context = useContext(MainContext);
 
     const handleSubmit = (e: FormEvent) => {
         context.fields = {

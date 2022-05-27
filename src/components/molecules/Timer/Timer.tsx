@@ -1,17 +1,18 @@
-import React, {FC, useContext, useState} from 'react';
+import React, {FC, useReducer, useState} from 'react';
 import {CountdownCircleTimer} from "react-countdown-circle-timer";
 import style from './_timer.module.scss';
 import {getPadTime} from "../../../helpers/getPadTime";
-import {ModalContext} from "../../../context/ModalContext";
+import {initialValue, reducer} from "../../../context";
 import {Button} from "../../atoms";
-import {MainContext} from "../../../context";
 
-export const Timer: FC = () => {
+interface ITimerProps {
+    setContext: any;
+}
+
+export const Timer: FC<ITimerProps> = () => {
 
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
-    const {fields: {pomodoro}} = useContext(ModalContext);
-    const context = useContext(MainContext);
+    const [state, dispatch] = useReducer(reducer, initialValue)
 
     const renderTime = ({remainingTime}: any) => {
         const minutes = getPadTime(Math.floor(remainingTime / 60));
@@ -29,15 +30,20 @@ export const Timer: FC = () => {
         setIsPlaying(prevState => !prevState)
     };
 
+    const handleDone = () => {
+        dispatch({type: 'REST_BACKGROUND'});
+    }
+
     return (
         <>
             <div className={style.timer_wrapper}>
                 <CountdownCircleTimer
                     isPlaying={isPlaying}
-                    duration={pomodoro}
+                    duration={state.fields.pomodoro}
                     colors='#bfbfbf'
                     trailColor='#fafafa'
                     strokeWidth={3}
+                    onComplete={() => handleDone()}
                 >
                     {renderTime}
                 </CountdownCircleTimer>

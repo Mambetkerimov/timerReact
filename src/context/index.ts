@@ -1,2 +1,1 @@
-export * from './MainContext';
-export * from './ModalContext';
+export * from './_MainContext';
