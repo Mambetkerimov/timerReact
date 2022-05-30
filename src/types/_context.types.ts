@@ -9,7 +9,6 @@ interface IContext {
   formFields: IFieldProps;
   isPlaying: boolean;
   loop: "rest" | "work";
-  shouldRepeat: boolean;
 }
 
 export type { IFieldProps, IContext };

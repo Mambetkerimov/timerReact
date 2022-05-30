@@ -26,9 +26,7 @@ export const Timer: FC<ITimer> = ({ formFields, setLoopContext }) => {
     setIsPlaying((prevState) => !prevState);
   };
 
-  const handleDone = (event: number): void => {
-    console.log(event);
-
+  const handleDone = (): void => {
     setLoopContext((prevState: IContext) => ({
       ...prevState,
       loop: "rest",
@@ -39,11 +37,11 @@ export const Timer: FC<ITimer> = ({ formFields, setLoopContext }) => {
     <div className={style.timer_wrapper}>
       <CountdownCircleTimer
         isPlaying={isPlaying}
-        duration={Number(formFields.pomodoro)}
+        duration={Number(formFields.pomodoro) * 60}
         colors="#bfbfbf"
         trailColor="#fafafa"
         strokeWidth={3}
-        onComplete={(event: number) => handleDone(event)}
+        onComplete={() => handleDone()}
       >
         {RenderTime}
       </CountdownCircleTimer>

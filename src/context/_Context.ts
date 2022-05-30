@@ -11,7 +11,6 @@ const initialContextValue: IContext = {
   },
   isPlaying: false,
   loop: "work",
-  shouldRepeat: true,
 };
 
 const Context = createContext<{
