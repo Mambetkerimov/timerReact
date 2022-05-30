@@ -1,42 +1,36 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { FormEvent, useContext, useState } from "react";
 
-import {Icon, Modal, Timer} from './components';
-import style from './_app.module.scss';
-import {initialValue, MainContext} from "./context";
+import { IFieldProps } from "./types";
+import { Context, initialContextValue } from "./context";
+import { Modal, ThemeProvider, Timer } from "./components";
 
 function App() {
-    const backgroundColor = {
-        work: 'linear-gradient(90deg, #F78CA0 0%, #F9748F 20.31%, #FD868C 66.67%, #FE9A8B 100%)',
-        rest: 'linear-gradient(180deg, #48C6EF 0%, #6F86D6 100%)'
-    }
+  const { context, setContext } = useContext(Context);
+  const [formFields, setFormFields] = useState<IFieldProps>(
+    initialContextValue.formFields
+  );
 
-    const {loop} = useContext(MainContext);
-    const [active, setActive] = useState<boolean>(false);
-    const [background, setBackground] = useState(backgroundColor.work);
-    const [context, setContext] = useState(initialValue);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
 
-    useEffect(() => {
-        if (loop === "rest") {
-            setBackground(backgroundColor.rest)
-        } else {
-            setBackground(backgroundColor.work)
-        }
-        console.log(context);
-    }, [loop])
+    setContext((prevState) => ({
+      ...prevState,
+      formFields: {
+        ...formFields,
+      },
+    }));
+  };
 
-    const handleModal = () => {
-        setActive(prevState => !prevState)
-    }
-
-    return (
-        <MainContext.Provider value={context}>
-            <div className={style.app} style={{background: background}}>
-                <Icon onClick={handleModal}/>
-                <Modal active={active} onClick={handleModal}/>
-                <Timer setContext={setContext}/>
-            </div>
-        </MainContext.Provider>
-    );
+  return (
+    <ThemeProvider loopContext={context.loop}>
+      <Modal
+        formFields={formFields}
+        setFormFields={setFormFields}
+        handleSubmit={handleSubmit}
+      />
+      <Timer formFields={formFields} setLoopContext={setContext} />
+    </ThemeProvider>
+  );
 }
 
 export default App;

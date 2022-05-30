@@ -13,7 +13,14 @@
 .modal_content {
   width: 585px;
   height: 609px;
-  background: linear-gradient(90deg, #F78CA0 0%, #F9748F 20.31%, #FD868C 66.67%, #FE9A8B 100%), #FEAFAF;
+  background: linear-gradient(
+      90deg,
+      #f78ca0 0%,
+      #f9748f 20.31%,
+      #fd868c 66.67%,
+      #fe9a8b 100%
+    ),
+    #feafaf;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   padding: 30px;
   border-radius: 30px;

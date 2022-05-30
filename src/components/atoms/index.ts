@@ -1,3 +1,3 @@
-export * from './Button/Button';
-export * from './Icon/Icon';
-export * from './Input/Input';
+export * from "./Button";
+export * from "./Icon";
+export * from "./Input";

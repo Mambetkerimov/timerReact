@@ -1,63 +1,96 @@
-import React, {FC, FormEvent, MouseEventHandler, useContext, useState} from 'react';
-import style from './_modal.module.scss';
-import {Button, Input} from '../../atoms';
-import {MainContext} from "../../../context";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  FormEventHandler,
+  Fragment,
+  SetStateAction,
+  useState,
+} from "react";
+
+import { IFieldProps } from "../../../types";
+import { Button, Icon, Input } from "../../atoms";
+import style from "./_modal.module.scss";
 
 interface IModalProps {
-    active: boolean;
-    onClick: MouseEventHandler;
+  formFields: IFieldProps;
+  setFormFields: Dispatch<SetStateAction<IFieldProps>>;
+  handleSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-export const Modal: FC<IModalProps> = ({active, onClick}) => {
-    const [pomodoro, setPomodoro] = useState<string>('');
-    const [sBreak, setSBreak] = useState<string>('');
-    const [lBreak, setLBreak] = useState<string>('');
-    const [numberPomodoro, setNumberPomodoro] = useState<string>('');
+/**
+ * Модальное окно
+ *
+ * @param {IFieldProps} formFields - Данные полей ввода
+ * @param {any} setFormFields - Сеттер изменения полей ввода
+ * @param {FormEventHandler<HTMLFormElement>} handleSubmit - Событие обработки формы
+ * @returns {FC<IModalProps>} - JSX
+ */
+export const Modal: FC<IModalProps> = ({
+  handleSubmit,
+  formFields: { pomodoro, numberPomodoro, sBreak, lBreak },
+  setFormFields,
+}) => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-    const context = useContext(MainContext);
+  const handleIsOpenModal = (): void => {
+    setIsOpenModal((prevState) => !prevState);
+  };
 
-    const handleSubmit = (e: FormEvent) => {
-        context.fields = {
-            pomodoro: Number(pomodoro),
-            sBreak: Number(sBreak),
-            lBreak: Number(lBreak),
-            numberPomodoro: Number(numberPomodoro)
-        }
-        e.preventDefault();
-        console.log(context.fields);
-    }
+  function onChange(event: ChangeEvent<HTMLInputElement>): void {
+    setFormFields((prevState: IFieldProps) => ({
+      ...prevState,
+      [event.target.name]: event.target.value.replace(/\D/g, ""),
+    }));
+  }
 
-    return (
-        <>
-            {active ?
-                <div className={style.modal}>
-                    <div className={style.modal_content}>
-                        <form onSubmit={handleSubmit}>
-                            <Input labelText="Pomodoro" name="pomodoro" value={pomodoro} onChange={(e) => {
-                                setPomodoro(e.target.value);
-                                console.log(e.target.value)
-                            }}/>
-                            <Input labelText="Short break" name="sbreak" value={sBreak} onChange={(e) => {
-                                setSBreak(e.target.value);
-                                console.log(e.target.value)
-                            }}/>
-                            <Input labelText="Long break" name="lbreak" value={lBreak} onChange={(e) => {
-                                setLBreak(e.target.value);
-                                console.log(e.target.value)
-                            }}/>
-                            <Input labelText="Number of pomodoro between break" name="numberpomodoro"
-                                   value={numberPomodoro} onChange={(e) => {
-                                setNumberPomodoro(e.target.value);
-                                console.log(e.target.value)
-                            }}/>
-                            <div className={style.buttons}>
-                                <Button text="Close" onClick={onClick}/>
-                                <Button text="Save" type="submit"/>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                : null}
-        </>
-    )
+  return (
+    <Fragment>
+      <Icon onClick={handleIsOpenModal} />
+      {isOpenModal && (
+        <div className={style.modal}>
+          <div className={style.modal_content}>
+            <form onSubmit={handleSubmit}>
+              <Input
+                name="pomodoro"
+                value={pomodoro}
+                labelText="Pomodoro"
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  onChange(event)
+                }
+              />
+              <Input
+                name="sBreak"
+                labelText="Short break"
+                value={sBreak}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  onChange(event)
+                }
+              />
+              <Input
+                name="lBreak"
+                labelText="Long break"
+                value={lBreak}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  onChange(event)
+                }
+              />
+              <Input
+                name="numberPomodoro"
+                labelText="Number of pomodoro between break"
+                value={numberPomodoro}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  onChange(event)
+                }
+              />
+              <div className={style.buttons}>
+                <Button text="Close" onClick={handleIsOpenModal} />
+                <Button text="Save" type="submit" onClick={handleIsOpenModal} />
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </Fragment>
+  );
 };

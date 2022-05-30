@@ -1,56 +1,55 @@
-import React, {FC, useReducer, useState} from 'react';
-import {CountdownCircleTimer} from "react-countdown-circle-timer";
-import style from './_timer.module.scss';
-import {getPadTime} from "../../../helpers/getPadTime";
-import {initialValue, reducer} from "../../../context";
-import {Button} from "../../atoms";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-interface ITimerProps {
-    setContext: any;
+import { IContext, IFieldProps } from "../../../types";
+import { Button } from "../../atoms";
+import style from "./_timer.module.scss";
+import { RenderTime } from "./fragment";
+
+interface ITimer {
+  formFields: IFieldProps;
+  setLoopContext: Dispatch<SetStateAction<IContext>>;
 }
 
-export const Timer: FC<ITimerProps> = () => {
+/**
+ * Компонент таймера
+ *
+ * @param {IFieldProps} formFields - поля формы из которых дергаются значения
+ * @param {Dispatch<SetStateAction<IContext>>} setLoopContext - сеттера для изменения фона
+ * @returns {FC<ITimer>} - JSX
+ */
 
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    const [state, dispatch] = useReducer(reducer, initialValue)
+export const Timer: FC<ITimer> = ({ formFields, setLoopContext }) => {
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-    const renderTime = ({remainingTime}: any) => {
-        const minutes = getPadTime(Math.floor(remainingTime / 60));
-        const seconds = getPadTime(remainingTime - minutes * 60);
-        return (
-            <div className={style.timer}>
-                <div className={style.time}>{minutes}</div>
-                <span className={style.time}>:</span>
-                <div className={style.time}>{seconds}</div>
-            </div>
-        );
-    };
+  const handlePlaying = (): void => {
+    setIsPlaying((prevState) => !prevState);
+  };
 
-    const handlePlaying = () => {
-        setIsPlaying(prevState => !prevState)
-    };
+  const handleDone = (event: number): void => {
+    console.log(event);
 
-    const handleDone = () => {
-        dispatch({type: 'REST_BACKGROUND'});
-    }
+    setLoopContext((prevState: IContext) => ({
+      ...prevState,
+      loop: "rest",
+    }));
+  };
 
-    return (
-        <>
-            <div className={style.timer_wrapper}>
-                <CountdownCircleTimer
-                    isPlaying={isPlaying}
-                    duration={state.fields.pomodoro}
-                    colors='#bfbfbf'
-                    trailColor='#fafafa'
-                    strokeWidth={3}
-                    onComplete={() => handleDone()}
-                >
-                    {renderTime}
-                </CountdownCircleTimer>
-                <div className={style.buttons}>
-                    <Button text={isPlaying ? `Pause` : `Start`} onClick={handlePlaying}/>
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <div className={style.timer_wrapper}>
+      <CountdownCircleTimer
+        isPlaying={isPlaying}
+        duration={Number(formFields.pomodoro)}
+        colors="#bfbfbf"
+        trailColor="#fafafa"
+        strokeWidth={3}
+        onComplete={(event: number) => handleDone(event)}
+      >
+        {RenderTime}
+      </CountdownCircleTimer>
+      <div className={style.buttons}>
+        <Button onClick={handlePlaying} text={isPlaying ? `Pause` : `Start`} />
+      </div>
+    </div>
+  );
 };
